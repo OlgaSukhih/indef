@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Indefinite Pronouns | Ocean Practice · Check your answers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #a1d4e6 0%, #c2e5f0 45%, #daf5ff 100%);
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1.5rem;
+            color: #023047;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* РЫБКИ — ТОЛЬКО ВПЕРЁД */
+        .fish {
+            position: fixed;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.2));
+            animation: swimForward linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes swimForward {
+            0% {
+                transform: translateX(-120px) translateY(0);
+            }
+            100% {
+                transform: translateX(calc(100vw + 150px)) translateY(0);
+            }
+        }
+
+        /* ПУЗЫРЬКИ */
+        .bubble {
+            position: fixed;
+            bottom: -100px;
+            background: radial-gradient(circle at 35% 30%, rgba(255, 255, 250, 0.95), rgba(170, 230, 255, 0.75));
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+            animation: riseBubble linear infinite;
+            box-shadow: 0 0 20px rgba(80, 190, 240, 0.7), inset 0 0 8px white;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes riseBubble {
+            0% {
+                transform: translateY(0) scale(0.6);
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(-130vh) scale(1.25);
+                opacity: 0;
+            }
+        }
+
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: repeating-linear-gradient( transparent 0px, transparent 28px, rgba(80, 170, 200, 0.3) 28px, rgba(130, 210, 235, 0.2) 48px);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: rgba(255, 250, 235, 0.88);
+            backdrop-filter: blur(6px);
+            border-radius: 80px;
+            padding: 1.6rem 1rem;
+            border: 2px solid #40b5c7;
+            box-shadow: 0 12px 28px -10px rgba(0, 70, 80, 0.25);
+        }
+
+        h1 {
+            font-size: 3.3rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #046380, #0284a0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #015c6e;
+            background: #ffffffcc;
+            display: inline-block;
+            padding: 0.3rem 2rem;
+            border-radius: 60px;
+        }
+
+        .exercise-card {
+            background: rgba(255, 251, 245, 0.94);
+            backdrop-filter: blur(4px);
+            border-radius: 52px;
+            margin-bottom: 2.6rem;
+            padding: 1.8rem 2rem;
+            border: 1px solid #6bc6d6;
+            box-shadow: 0 12px 24px -12px rgba(0, 50, 60, 0.3);
+            transition: all 0.2s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-3px);
+            border-color: #2e95a8;
+            background: #fffef8;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            border-left: 8px solid #1c9eb3;
+            padding-left: 24px;
+            color: #035a6e;
+        }
+
+        .exercise-sub {
+            font-size: 1.25rem;
+            color: #2c6b7c;
+            margin-bottom: 1.6rem;
+            margin-top: 0.2rem;
+            padding-left: 32px;
+            font-style: italic;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-item {
+            font-size: 1.4rem;
+            line-height: 1.45;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px dashed #aad0db;
+            font-weight: 500;
+            color: #023e54;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-number {
+            font-weight: 800;
+            display: inline-block;
+            width: 38px;
+            color: #cb7b2e;
+            font-size: 1.3rem;
+        }
+
+        .answer-input {
+            font-size: 1.2rem;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 2px solid #6bc6d6;
+            background: white;
+            font-family: inherit;
+            width: 180px;
+            transition: 0.2s;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #1c9eb3;
+            box-shadow: 0 0 0 3px rgba(28,158,179,0.2);
+        }
+
+        .check-btn {
+            background: #1c9eb3;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 8px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .check-btn:hover {
+            background: #0f7b8c;
+            transform: scale(1.02);
+        }
+
+        .result-area {
+            margin-top: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 40px;
+            background: #eef6f9;
+            border-left: 6px solid #48b5c0;
+        }
+
+        .correct-feedback {
+            color: #1e7e34;
+            background: #e0f5e6;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 1rem;
+            display: inline-block;
+        }
+
+        .wrong-feedback {
+            color: #c0392b;
+            background: #ffe0db;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .reset-btn {
+            background: #ffb347;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 6px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-left: 15px;
+            font-family: inherit;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 1.1rem;
+            color: #025e72;
+            background: #cbeef7cc;
+            border-radius: 60px;
+            padding: 1rem;
+        }
+
+        @media (max-width: 750px) {
+            body {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .task-item {
+                font-size: 1.1rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .answer-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wave-bg"></div>
+<div id="bubble-container"></div>
+<div id="fish-container"></div>
+
+<div class="container">
+    <div class="hero">
+        <h1>🌊 INDEFINITE PRONOUNS · МОРСКАЯ ПРАКТИКА 🌊</h1>
+        <div class="sub">Drilling · Проверка ответов</div>
+        <div style="margin-top: 0.7rem; font-size: 1.3rem; color: #015c6e;">🐠 something · anything · somebody · anybody · nothing · nobody 🐡</div>
+    </div>
+
+    <!-- =================== УПРАЖНЕНИЕ 1 =================== -->
+    <div class="exercise-card" id="exercise1">
+        <h2>🐟 Exercise 1. Complete the sentences</h2>
+        <div class="exercise-sub">Choose the correct word (something / anything / somebody / anybody / nothing)</div>
+        <div class="task-list" id="ex1-list">
+            <div class="task-item">
+                <span class="task-number">1.</span> There is _________ moving near the coral.
+                <span style="color:#1f7a8c;">(something / anything)</span>
+                <input type="text" class="answer-input" id="q1" placeholder="your answer">
+                <span id="fb1" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">2.</span> Can you see _________ near the shark?
+                <span style="color:#1f7a8c;">(somebody / anybody)</span>
+                <input type="text" class="answer-input" id="q2" placeholder="your answer">
+                <span id="fb2" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">3.</span> There is _________ inside the shell.
+                <span style="color:#1f7a8c;">(nothing / anything)</span>
+                <input type="text" class="answer-input" id="q3" placeholder="your answer">
+                <span id="fb3" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">4.</span> The crab didn’t find _________.
+                <span style="color:#1f7a8c;">(anything / something)</span>
+                <input type="text" class="answer-input" id="q4" placeholder="your answer">
+                <span id="fb4" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">5.</span> I heard _________ in the water.
+                <span style="color:#1f7a8c;">(something / anything)</span>
+                <input type="text" class="answer-input" id="q5" placeholder="your answer">
+                <span id="fb5" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">6.</span> Is there _________ in the cave?
+                <span style="color:#1f7a8c;">(anybody / somebody)</span>
+                <input type="text" class="answer-input" id="q6" placeholder="your answer">
+                <span id="fb6" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">7.</span> The whale saw _________ strange.
+                <span style="color:#1f7a8c;">(something / nothing)</span>
+                <input type="text" class="answer-input" id="q7" placeholder="your answer">
+                <span id="fb7" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item">
+                <span class="task-number">8.</span> There is _________ living in this empty rock.
+                <span style="color:#1f7a8c;">(nobody / somebody)</span>
+                <input type="text" class="answer-input" id="q8" placeholder="your answer">
+                <span id="fb8" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+        </div>
+        <button class="check-btn" id="checkEx1">Проверить Exercise 1</button>
+        <button class="reset-btn" id="resetEx1">Сбросить</button>
+        <div id="resultEx1" class="result-area" style="display:none;"></div>
+    </div>
+
+    <!-- =================== УПРАЖНЕНИЕ 2 =================== -->
+    <div class="exercise-card" id="exercise2">
+        <h2>🐬 Exercise 2. Substitution Drill</h2>
+        <div class="exercise-sub">Replace the underlined words with an indefinite pronoun (something / somebody / nothing / anybody / anything / nobody)</div>
+        <div class="task-list" id="ex2-list">
+            <div class="task-item"><span class="task-number">1.</span> I met <strong>a diver</strong>. → __________
+                <input type="text" class="answer-input" id="s1" placeholder="your answer">
+                <span id="fb_s1" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">2.</span> We found <strong>a treasure chest</strong>. → __________
+                <input type="text" class="answer-input" id="s2" placeholder="your answer">
+                <span id="fb_s2" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">3.</span> The dolphin saw <strong>a person</strong>. → __________
+                <input type="text" class="answer-input" id="s3" placeholder="your answer">
+                <span id="fb_s3" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">4.</span> Sharks found <strong>no food</strong>. → __________
+                <input type="text" class="answer-input" id="s4" placeholder="your answer">
+                <span id="fb_s4" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">5.</span> I heard <strong>a strange sound</strong>. → __________
+                <input type="text" class="answer-input" id="s5" placeholder="your answer">
+                <span id="fb_s5" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">6.</span> The octopus saw <strong>a pirate</strong>. → __________
+                <input type="text" class="answer-input" id="s6" placeholder="your answer">
+                <span id="fb_s6" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">7.</span> There was <strong>no animal</strong> in the cave. → __________
+                <input type="text" class="answer-input" id="s7" placeholder="your answer">
+                <span id="fb_s7" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+            <div class="task-item"><span class="task-number">8.</span> We discovered <strong>a hidden object</strong>. → __________
+                <input type="text" class="answer-input" id="s8" placeholder="your answer">
+                <span id="fb_s8" class="correct-feedback" style="display:none;">✓</span>
+            </div>
+        </div>
+        <button class="check-btn" id="checkEx2">Проверить Exercise 2</button>
+        <button class="reset-btn" id="resetEx2">Сбросить</button>
+        <div id="resultEx2" class="result-area" style="display:none;"></div>
+    </div>
+
+    <footer>
+        🐠 INDEFINITE PRONOUNS · только упражнения 1 и 2 с проверкой 🐡<br>
+        🐟 рыбки плывут вперёд · крупные пузырьки · морской стиль
+    </footer>
+</div>
+
+<script>
+    // ========== ПРАВИЛЬНЫЕ ОТВЕТЫ ==========
+    const answersEx1 = {
+        q1: "something",
+        q2: "anybody",
+        q3: "nothing",
+        q4: "anything",
+        q5: "something",
+        q6: "anybody",
+        q7: "something",
+        q8: "nobody"
+    };
+
+    const answersEx2 = {
+        s1: "somebody",
+        s2: "something",
+        s3: "somebody",
+        s4: "nothing",
+        s5: "something",
+        s6: "somebody",
+        s7: "nobody",
+        s8: "something"
+    };
+
+    // функция нормализации (приводим к нижнему регистру, убираем пробелы)
+    function normalize(str) {
+        return str.trim().toLowerCase().replace(/[^a-z]/g, '');
+    }
+
+    // Проверка Exercise 1
+    document.getElementById('checkEx1').addEventListener('click', () => {
+        let correctCount = 0;
+        const total = Object.keys(answersEx1).length;
+        
+        for (let [id, correct] of Object.entries(answersEx1)) {
+            const input = document.getElementById(id);
+            const userAnswer = normalize(input.value);
+            const isCorrect = (userAnswer === correct);
+            const feedbackSpan = document.getElementById(`fb${id.substring(1)}`);
+            
+            if (isCorrect) {
+                correctCount++;
+                if (feedbackSpan) {
+                    feedbackSpan.style.display = 'inline-block';
+                    feedbackSpan.textContent = '✓ верно';
+                    feedbackSpan.className = 'correct-feedback';
+                }
+                input.style.borderColor = '#2ecc71';
+            } else {
+                if (feedbackSpan) {
+                    feedbackSpan.style.display = 'inline-block';
+                    feedbackSpan.textContent = `✗ правильно: "${correct}"`;
+                    feedbackSpan.className = 'wrong-feedback';
+                }
+                input.style.borderColor = '#e74c3c';
+            }
+        }
+        
+        const resultDiv = document.getElementById('resultEx1');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `✅ Результат Exercise 1: ${correctCount} из ${total} правильных. ${correctCount === total ? 'Отлично! 🎉' : 'Попробуй ещё раз! 🌊'}`;
+        if (correctCount === total) resultDiv.style.background = '#d4edda';
+        else resultDiv.style.background = '#fff3cd';
+    });
+
+    // Проверка Exercise 2
+    document.getElementById('checkEx2').addEventListener('click', () => {
+        let correctCount = 0;
+        const total = Object.keys(answersEx2).length;
+        
+        for (let [id, correct] of Object.entries(answersEx2)) {
+            const input = document.getElementById(id);
+            const userAnswer = normalize(input.value);
+            const isCorrect = (userAnswer === correct);
+            const feedbackSpan = document.getElementById(`fb_${id}`);
+            
+            if (isCorrect) {
+                correctCount++;
+                if (feedbackSpan) {
+                    feedbackSpan.style.display = 'inline-block';
+                    feedbackSpan.textContent = '✓ верно';
+                    feedbackSpan.className = 'correct-feedback';
+                }
+                input.style.borderColor = '#2ecc71';
+            } else {
+                if (feedbackSpan) {
+                    feedbackSpan.style.display = 'inline-block';
+                    feedbackSpan.textContent = `✗ правильно: "${correct}"`;
+                    feedbackSpan.className = 'wrong-feedback';
+                }
+                input.style.borderColor = '#e74c3c';
+            }
+        }
+        
+        const resultDiv = document.getElementById('resultEx2');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `✅ Результат Exercise 2: ${correctCount} из ${total} правильных. ${correctCount === total ? 'Молодец! 🐬' : 'Повтори правила! 🐠'}`;
+        if (correctCount === total) resultDiv.style.background = '#d4edda';
+        else resultDiv.style.background = '#fff3cd';
+    });
+
+    // Сброс для Exercise 1
+    document.getElementById('resetEx1').addEventListener('click', () => {
+        for (let id of Object.keys(answersEx1)) {
+            const input = document.getElementById(id);
+            input.value = '';
+            input.style.borderColor = '#6bc6d6';
+            const fbSpan = document.getElementById(`fb${id.substring(1)}`);
+            if (fbSpan) fbSpan.style.display = 'none';
+        }
+        document.getElementById('resultEx1').style.display = 'none';
+    });
+
+    // Сброс для Exercise 2
+    document.getElementById('resetEx2').addEventListener('click', () => {
+        for (let id of Object.keys(answersEx2)) {
+            const input = document.getElementById(id);
+            input.value = '';
+            input.style.borderColor = '#6bc6d6';
+            const fbSpan = document.getElementById(`fb_${id}`);
+            if (fbSpan) fbSpan.style.display = 'none';
+        }
+        document.getElementById('resultEx2').style.display = 'none';
+    });
+
+    // ========== ПУЗЫРЬКИ ==========
+    function createBubble() {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        const size = Math.random() * 55 + 28;
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = Math.random() * 100 + '%';
+        bubble.style.animationDuration = Math.random() * 7 + 6 + 's';
+        bubble.style.animationDelay = Math.random() * 4 + 's';
+        bubble.style.opacity = Math.random() * 0.6 + 0.4;
+        document.getElementById('bubble-container').appendChild(bubble);
+        setTimeout(() => bubble.remove(), 13000);
+    }
+    setInterval(createBubble, 500);
+    for (let i = 0; i < 35; i++) setTimeout(createBubble, i * 220);
+
+    // ========== РЫБКИ — ТОЛЬКО ВПЕРЁД ==========
+    const fishEmojis = ['🐟', '🐠', '🐡', '🐟', '🐠', '🐡', '🐟', '🐠', '🐡', '🐟', '🐠', '🐡'];
+    
+    function createFish() {
+        const fish = document.createElement('div');
+        fish.classList.add('fish');
+        const randomFish = fishEmojis[Math.floor(Math.random() * fishEmojis.length)];
+        const colors = ['#e34234', '#f4a300', '#2e8b57', '#1e6f9f', '#c154c1', '#ff8c42', '#3a9b8f'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        fish.innerHTML = randomFish;
+        fish.style.color = randomColor;
+        fish.style.fontSize = Math.random() * 30 + 32 + 'px';
+        fish.style.top = Math.random() * 85 + 5 + '%';
+        fish.style.animationDuration = Math.random() * 22 + 18 + 's';
+        fish.style.animationDelay = Math.random() * 6 + 's';
+        fish.style.opacity = 0.9;
+        fish.style.textShadow = '1px 1px 2px rgba(0,0,0,0.2)';
+        document.getElementById('fish-container').appendChild(fish);
+        setTimeout(() => fish.remove(), 42000);
+    }
+    
+    for (let i = 0; i < 20; i++) {
+        setTimeout(createFish, i * 700);
+    }
+    setInterval(createFish, 4500);
+</script>
+</body>
+</html>
